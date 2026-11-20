@@ -1,8 +1,23 @@
 # Courier notifications: Rails quickstart
 
-A Rails 8 app that sends one notification by email, SMS, and in-app inbox when an order ships, and respects each user's notification preferences. Shipping an order commits a model change, the commit enqueues an Active Job, and the job makes one call to Courier with the `trycourier` gem. Courier delivers on every channel, skips the ones the user opted out of, and puts a link to Courier's hosted preference page in the message, so you don't build a settings screen. The page renders the `<courier-inbox>` web component, signed in with a JWT from a small controller.
+A Rails 8 app that sends one notification by email, SMS, and in-app inbox when an order ships, and respects each user's notification preferences. Shipping an order commits a model change, the commit enqueues an Active Job, and the job makes one call to Courier with the `trycourier` gem. Courier delivers on every channel, skips users who opted out of the topic, and puts a link to Courier's hosted preference page in the message, so you don't build a settings screen. The page renders the `<courier-inbox>` web component, signed in with a JWT from a small controller.
 
 This is the companion project for [Add email, SMS, and in-app notifications with user preferences to a Rails app](https://www.courier.com/docs/guides/add-notifications-to-rails) in the Courier docs.
+
+## Build this with a coding agent
+
+Paste this into Claude Code, Cursor, or Codex from the root of your Rails app:
+
+```text
+Add email, SMS, and in-app notifications with per-user preferences to this Rails app with Courier.
+Follow https://www.courier.com/docs/guides/add-notifications-to-rails.md and the reference app at https://github.com/trycourier/courier-rails-quickstart.
+Use the trycourier gem (require "courier") and read COURIER_API_KEY and COURIER_TOPIC_ID from the environment.
+Send from an Active Job enqueued in a model's after_commit callback, with one idempotency key per event.
+Mint the inbox JWT for the user in the session, never a user id from params, and render <courier-inbox> in a view.
+When done, run bin/rails courier:send and show me the request id.
+```
+
+Install the Courier skill with `npx skills add trycourier/courier-skills` and connect the [Courier MCP server](https://www.courier.com/docs/resources/mcp), so the agent can read Courier Logs and templates itself. `AGENTS.md` lists the commands and the rules to keep.
 
 ## Prerequisites
 

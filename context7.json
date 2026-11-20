@@ -1,0 +1,12 @@
+{
+  "$schema": "https://context7.com/schema/context7.json",
+  "projectTitle": "Courier + Rails quickstart",
+  "description": "A Rails 8 app that sends email, SMS, and in-app notifications with per-user preferences through Courier from an Active Job.",
+  "rules": [
+    "Use the trycourier gem with require \"courier\", and call client.send_.message (send is reserved in Ruby).",
+    "Read COURIER_API_KEY from the environment on the server only. The browser gets a scoped JWT from auth.issue_token.",
+    "Pass one idempotency_key per event, such as order-<id>-shipped-<updated_at>, so Active Job retries never send twice.",
+    "Enqueue the send from an after_commit callback, not after_save.",
+    "Mint the inbox JWT for the user in the session, never a user id from params."
+  ]
+}
