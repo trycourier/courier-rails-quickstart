@@ -12,7 +12,9 @@ class Order < ApplicationRecord
       user,
       title: "Order ##{id} has shipped",
       body: "Your order is on its way.",
-      idempotency_key: "order-#{id}-shipped"
+      # One key per shipment: retries of this job reuse it, and shipping the
+      # same order again later gets a new one.
+      idempotency_key: "order-#{id}-shipped-#{updated_at.to_i}"
     )
   end
 end
