@@ -1,0 +1,15 @@
+<main style="max-width: 40rem; margin: 2rem auto;">
+  <h1>Notifications</h1>
+
+  <courier-inbox height="32rem"></courier-inbox>
+</main>
+
+<script type="module">
+  // Importing the package registers <courier-inbox>.
+  import { Courier } from "@trycourier/courier-ui-inbox";
+
+  const response = await fetch("<%= courier_token_path %>");
+  const { userId, token } = await response.json();
+
+  Courier.shared.signIn({ userId, jwt: token });
+</script>
