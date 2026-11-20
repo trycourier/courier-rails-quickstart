@@ -5,11 +5,13 @@ namespace :courier do
     ActiveJob::Base.queue_adapter = :inline
     Rails.logger.broadcast_to(ActiveSupport::Logger.new($stdout, level: :info))
 
+    email = ENV["DEMO_EMAIL"].to_s.strip
+    if email.empty? || email == "YOUR_EMAIL"
+      abort "Set DEMO_EMAIL in .env to the email you log in to Courier with."
+    end
+
     user = User.find_or_initialize_by(id: 123)
-    user.update!(
-      email: ENV.fetch("DEMO_EMAIL") { abort "Set DEMO_EMAIL in .env first." },
-      phone_number: ENV["DEMO_PHONE"].presence
-    )
+    user.update!(email: email, phone_number: ENV["DEMO_PHONE"].presence)
 
     order = user.orders.create!
     order.update!(status: "shipped") # after_update_commit enqueues NotifyJob

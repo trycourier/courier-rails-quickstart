@@ -2,7 +2,7 @@
 
 A Rails 8 app that sends one notification by email, SMS, and in-app inbox when an order ships, and respects each user's notification preferences. Shipping an order commits a model change, the commit enqueues an Active Job, and the job makes one call to Courier with the `trycourier` gem. Courier delivers on every channel, skips the ones the user opted out of, and puts a link to Courier's hosted preference page in the message, so you don't build a settings screen. The page renders the `<courier-inbox>` web component, signed in with a JWT from a small controller.
 
-This is the companion project for [Add notifications with user preferences to a Rails app](https://www.courier.com/docs/guides/add-notifications-to-rails) in the Courier docs.
+This is the companion project for [Add email, SMS, and in-app notifications with user preferences to a Rails app](https://www.courier.com/docs/guides/add-notifications-to-rails) in the Courier docs.
 
 ## Prerequisites
 
@@ -32,7 +32,7 @@ Then, in a second terminal:
 bin/rails courier:send
 ```
 
-The task ships a demo order. The email arrives at `DEMO_EMAIL`, the text at `DEMO_PHONE` if you set one, and the message appears in the open inbox without a refresh. Every message ends with a link to the user's hosted preference page. Turn the topic off there, run the task again, and Courier blocks the send with the reason `UNSUBSCRIBED` in [Logs](https://app.courier.com/logs).
+The task ships a demo order. The email arrives at `DEMO_EMAIL`, the text at `DEMO_PHONE` if you set one, and the message appears in the open inbox without a refresh. Without a phone number, Courier skips SMS and still delivers the email and the inbox message. Every message ends with a link to the user's hosted preference page. Turn the topic off there, run the task again, and Courier blocks the send with the reason `UNSUBSCRIBED` in [Logs](https://app.courier.com/logs).
 
 ## How the pieces fit
 
