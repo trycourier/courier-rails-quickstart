@@ -14,7 +14,7 @@ class Order < ApplicationRecord
       body: "Your order is on its way.",
       # One key per shipment: retries of this job reuse it, and shipping the
       # same order again later gets a new one.
-      idempotency_key: "order-#{id}-shipped-#{updated_at.to_i}"
+      idempotency_key: "order-#{id}-shipped-#{updated_at.strftime("%s%6N")}"
     )
   end
 end
