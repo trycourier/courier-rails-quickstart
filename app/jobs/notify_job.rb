@@ -1,11 +1,11 @@
 class NotifyJob < ApplicationJob
   queue_as :default
 
-  # The idempotency key makes a retry safe: Courier returns the first result
-  # instead of sending twice.
+  # Retry only what a retry can fix: a request that never reached Courier, or
+  # a rate limit. Courier replays any other error for the same idempotency key,
+  # so retrying it would only get the same answer back.
   retry_on Courier::Errors::APIConnectionError,
            Courier::Errors::RateLimitError,
-           Courier::Errors::InternalServerError,
            wait: :polynomially_longer, attempts: 5
 
   def perform(user, title:, body:, idempotency_key:)
