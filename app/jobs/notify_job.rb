@@ -1,10 +1,7 @@
 class NotifyJob < ApplicationJob
   queue_as :default
 
-  # Retry only what a retry can fix: a request that never reached Courier, a
-  # rate limit, or a 409 while Courier holds the key's 60-second lock. Courier
-  # replays any other error for the same idempotency key, so retrying it would
-  # only get the same answer back. Each retry waits out the lock.
+  # Courier replays any other error for the same key, so retry only these, after its 60-second hold.
   retry_on Courier::Errors::APIConnectionError,
            Courier::Errors::RateLimitError,
            Courier::Errors::ConflictError,
